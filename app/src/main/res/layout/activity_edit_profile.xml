@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/backgroundSoft">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Display Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/display_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter display name"
+            android:padding="12dp"
+            android:textColor="@color/textPrimaryLight"
+            android:textColorHint="@color/textSecondaryLight"
+            android:background="@color/cardBackground"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bio"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/bio_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tell us about yourself..."
+            android:padding="12dp"
+            android:minLines="4"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:textColor="@color/textPrimaryLight"
+            android:textColorHint="@color/textSecondaryLight"
+            android:background="@color/cardBackground"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Profile Picture"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <ImageView
+            android:id="@+id/profile_image_preview"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_change_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change photo" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp" />
+
+    </LinearLayout>
+
+</ScrollView>
+

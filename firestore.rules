@@ -1,0 +1,123 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Anyone can read user profiles (for social features)
+      allow read: if true;
+      
+      // Users can only create their own profile (document ID must match Firebase Auth UID)
+      allow create: if isAuthenticated() && 
+        userId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['username', 'displayName', 'bio', 'profileImageUrl', 'passwordHash']);
+      
+      // Users can only update their own profile (document ID must match auth UID)
+      allow update: if isAuthenticated() && 
+        userId == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'bio', 'profileImageUrl']);
+      
+      // Users cannot delete their profile
+      allow delete: if false;
+    }
+    
+    // Messages collection
+    match /messages/{messageId} {
+      // Users can read messages where they are sender or receiver
+      // Note: For queries, Firestore validates that the query could only return documents
+      // where the user is the sender or receiver. Queries must filter by fromUserId or toUserId
+      // matching the authenticated user's ID.
+      allow read: if isAuthenticated() && 
+        (resource.data.fromUserId == request.auth.uid || 
+         resource.data.toUserId == request.auth.uid);
+      
+      // Users can only create messages as sender (fromUserId must match auth UID)
+      // Check that all required fields exist and are not null
+      allow create: if isAuthenticated() && 
+        request.resource.data.fromUserId == request.auth.uid &&
+        request.resource.data.fromUserId is string &&
+        request.resource.data.toUserId is string &&
+        request.resource.data.text is string &&
+        request.resource.data.timestamp is number &&
+        request.resource.data.toUserId != null &&
+        request.resource.data.text != null &&
+        request.resource.data.text.size() > 0 &&
+        request.resource.data.timestamp > 0;
+      
+      // Users can only update/delete their own sent messages
+      allow update, delete: if isAuthenticated() && 
+        resource.data.fromUserId == request.auth.uid;
+    }
+    
+    // Follows collection
+    match /follows/{followId} {
+      // Authenticated users can read follows
+      allow read: if isAuthenticated();
+      
+      // Users can only create follows where they are the follower (followerId must match auth UID)
+      allow create: if isAuthenticated() && 
+        request.resource.data.followerId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['followerId', 'followedId']);
+      
+      // Users can only delete follows where they are the follower
+      allow delete: if isAuthenticated() && 
+        resource.data.followerId == request.auth.uid;
+      
+      // No updates allowed
+      allow update: if false;
+    }
+    
+    // Movies collection
+    match /movies/{movieId} {
+      // Anyone can read movies
+      allow read: if true;
+      
+      // Only authenticated users can create/update movies
+      allow write: if isAuthenticated() &&
+        request.resource.data.keys().hasAll(['id', 'title', 'overview', 'posterPath', 'releaseYear', 'tmdbRating']);
+    }
+    
+    // Timeline events collection (note: collection name is timeline_events with underscore)
+    match /timeline_events/{eventId} {
+      // Authenticated users can read timeline events
+      allow read: if isAuthenticated();
+      
+      // Users can only create timeline events for themselves (userId must match auth UID)
+      allow create: if isAuthenticated() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['userId', 'movieId', 'type', 'timestamp']);
+      
+      // Users can only update/delete their own timeline events
+      allow update, delete: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+    }
+    
+    // User movies collection (favorites/watched)
+    match /userMovies/{userMovieId} {
+      // Users can read their own user movies (userId must match auth UID)
+      // Note: Queries must filter by userId matching the authenticated user's ID
+      allow read: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+      
+      // Users can only create/update their own user movies (userId must match auth UID)
+      allow create, update: if isAuthenticated() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['userId', 'movieId', 'isFavorite', 'isWatched']);
+      
+      // Users can only delete their own user movies
+      allow delete: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+    }
+  }
+}
+

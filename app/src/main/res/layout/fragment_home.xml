@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundSoft">
+
+    <!-- Tabs + search icon row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="4dp">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/cardBackground"
+            android:elevation="4dp"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="?attr/colorPrimary"
+            app:tabSelectedTextColor="?attr/colorPrimary"
+            app:tabTextColor="#666">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Popular" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top Rated" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <!-- Search icon that toggles dropdown text input -->
+        <ImageButton
+            android:id="@+id/btn_search_toggle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/search"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_menu_search"
+            android:tint="@color/textPrimaryLight" />
+
+    </LinearLayout>
+
+    <!-- Dropdown search text area (initially hidden) -->
+    <EditText
+        android:id="@+id/search_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Search movies..."
+        android:padding="10dp"
+        android:textColor="@color/textPrimaryLight"
+        android:textColorHint="@color/textSecondaryLight"
+        android:background="@color/cardBackground"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:clipToPadding="false"
+        android:layoutAnimation="@anim/item_fall_down" />
+
+</LinearLayout>

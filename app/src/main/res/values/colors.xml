@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand / accent palette -->
+    <color name="primaryAccent">#FF4A90E2</color>
+    <color name="primaryAccentDark">#FF2563EB</color>
+    <color name="primaryAccentSoft">#334A90E2</color>
+    <color name="backgroundSoft">#FF0F172A</color>
+    <color name="cardBackground">#FF111827</color>
+    <color name="chipBackground">#1AFFFFFF</color>
+    <color name="textPrimaryLight">#FFFFFFFF</color>
+    <color name="textSecondaryLight">#FF9CA3AF</color>
+</resources>
